@@ -19,17 +19,18 @@ Top down 2D trap adventure game. The path is filled with non-obvious traps with 
 
 1. Specifications:
 
-- Engine & Programming Language: Processing - Java
+    - Engine & Programming Language: Processing - Java
 
 2. Environment
 
-a. Inspo:
+    a. Inspo
+     - [Trap Adventure 2 #001 - YouTube](https://www.youtube.com/watch?v=C1ObitoLwhM)
+     - Mario platformer
+     - Dungeon crawler
 
-    - [Trap Adventure 2 - WHO MADE THIS GAME AND WHY 😡😡? ! " 🤰😡 - #001 - YouTube](https://www.youtube.com/watch?v=C1ObitoLwhM)
-    - Mario platformer
-    - Dungeon crawler
-
-b. Player - Appearance - Abilities
+    b. Player 
+      - Appearance
+       - Abilities
 
 3. Game Logic/Interaction
 
@@ -40,9 +41,21 @@ b. Player - Appearance - Abilities
 **1. First Iteration:**
 
 - Map creation: Create an end-to-end map. Map has 1 path to the end with some hidden paths leading to rewards or keys… (depends on task systems in iteration 3).
-- Player movement: 4 or 8 directions?
+- Player movement: 
+    - 4 or 8 directions?
+    - Shoot? (COuld have hidden walls that reflect the shoot)
+- Collision Detection:
+    - Trigger (Soft Collision): taps, pressure plate, floor tiles, item, end goal
+    - hard Collision: Walls, immovanle objects
+    - Can incorporate multiple conditions to add subtlety
+    - End goal: 
+        - Display winning screen
+    
 - Collision Detection: Detect collisions between players and other objects (walls, floor, traps)
 
 ### Resource:
 
 - [Top-down movement](https://discourse.processing.org/t/top-down-game-template/22770)
+- [Camera class](https://processing.org/reference/camera_.html)
+- [Constrain (Colision)](https://processing.org/examples/constrain.html)
+- [Map Creation](https://openprocessing.org/sketch/1627352)
