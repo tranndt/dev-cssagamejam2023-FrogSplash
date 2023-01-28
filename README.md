@@ -30,7 +30,7 @@ Top down 2D trap adventure game. The path is filled with non-obvious traps with 
 
     b. Player 
       - Appearance
-       - Abilities
+      - Abilities
 
 3. Game Logic/Interaction
 
