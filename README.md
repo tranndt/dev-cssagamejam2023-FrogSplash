@@ -4,7 +4,7 @@
 
 ## Theme: GLITCH
 
-Team members:
+**Team members:**
 
 - Jase Tran
 - Tien Huynh
@@ -15,7 +15,7 @@ Team members:
 
 Top down 2D trap adventure game. The path is filled with non-obvious traps with a glitch: they don’t always activate. Whenever one does and the player dies and has to replay their path, one of such previously unactivated traps might suddenly do, adding another layer of suspense to the player. Player wins when they get to the end of the map, and is welcomed with a pleasant surprise.
 
-### Game Design:
+## Game Design:
 
 1. Specifications:
 
@@ -36,9 +36,9 @@ Top down 2D trap adventure game. The path is filled with non-obvious traps with 
 
    - Traps
 
-### Iterations:
+## Iterations:
 
-**1. First Iteration:**
+### 1. First Iteration: ###
 
 - Map creation: Create an end-to-end map. Map has 1 path to the end with some hidden paths leading to rewards or keys… (depends on task systems in iteration 3).
 - Player movement: 
@@ -53,7 +53,9 @@ Top down 2D trap adventure game. The path is filled with non-obvious traps with 
     
 - Collision Detection: Detect collisions between players and other objects (walls, floor, traps)
 
-### Resource:
+
+### 2. Second Interation: ###
+## Resource:
 
 - [Top-down movement](https://discourse.processing.org/t/top-down-game-template/22770)
 - [Camera class](https://processing.org/reference/camera_.html)
