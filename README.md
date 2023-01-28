@@ -45,4 +45,4 @@ b. Player - Appearance - Abilities
 
 ### Resource:
 
-[Top-down movement](https://discourse.processing.org/t/top-down-game-template/22770)
+- [Top-down movement](https://discourse.processing.org/t/top-down-game-template/22770)
