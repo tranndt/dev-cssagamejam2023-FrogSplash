@@ -22,20 +22,18 @@ Top down 2D trap adventure game. The path is filled with non-obvious traps with 
 - Engine & Programming Language: Processing - Java
 
 2. Environment
-   a. Inspo:
 
-   - [Trap Adventure 2 - WHO MADE THIS GAME AND WHY 😡😡? ! " 🤰😡 - #001 - YouTube](https://www.youtube.com/watch?v=C1ObitoLwhM)
-   - Mario platformer
-   - Dungeon crawler
+a. Inspo:
 
-b. Player
+    - [Trap Adventure 2 - WHO MADE THIS GAME AND WHY 😡😡? ! " 🤰😡 - #001 - YouTube](https://www.youtube.com/watch?v=C1ObitoLwhM)
+    - Mario platformer
+    - Dungeon crawler
 
-- Appearance
-- Abilities
+b. Player - Appearance - Abilities
 
 3. Game Logic/Interaction
 
-- Traps
+   - Traps
 
 ### Iterations:
 
