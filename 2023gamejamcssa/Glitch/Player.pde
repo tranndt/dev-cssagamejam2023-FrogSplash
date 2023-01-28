@@ -1,13 +1,10 @@
-int playerW = 20;
-int playerH = 20;
+static class Player{
+  int W = 40;
+  int H = 40;
+  
+  int X = 500/2 - W/2;
+  int Y = 500/2 - H/2;
 
-int playerX = 500/2 - playerW/2;
-int playerY = 500/2 - playerH/2;
-
-int fixX = playerX;
-int fixY = playerY;
-
-//int mapX = 250;
-//int mapY = 250;
-
-int playerSpeed = 10;
+  int Speed = 10;
+  
+}

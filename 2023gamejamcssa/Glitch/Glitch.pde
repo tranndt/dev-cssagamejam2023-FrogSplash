@@ -1,6 +1,4 @@
-//int mapW = 1000;
-//int mapH = 1000;
-boolean mapTurn = true;
+Player player = new Player();
 Map map = new Map();
 int mapX = -width/2 - map.block_x/2;
 int mapY = -height/2 - map.block_y/2;
@@ -50,25 +48,23 @@ void draw()
   being pressed, I simply update the players position
   in the relative direction with +/- playerSpeed.
   */
-  if (mapTurn){
-    if(kd[0]) mapX -= playerSpeed;
-    if(kd[1]) mapY += playerSpeed;
-    if(kd[2]) mapX += playerSpeed;
-    if(kd[3]) mapY -= playerSpeed;
-  }
+    if(kd[0]) mapX -= player.Speed;
+    if(kd[1]) mapY += player.Speed;
+    if(kd[2]) mapX += player.Speed;
+    if(kd[3]) mapY -= player.Speed;
   //If you add more keys to ks[] and kd[], then add the
   //key's function here under the next number for if(kd[x])
-  if (mapX > map.mapW - width/2 - playerW/2){
-    mapX = map.mapW - width/2 - playerW/2;
+  if (mapX > map.mapW - width/2 - player.W/2){
+    mapX = map.mapW - width/2 - player.W/2;
   }
-  if (mapX < -width/2 + playerW/2){
-    mapX = -width/2 + playerW/2;
+  if (mapX < -width/2 + player.W/2){
+    mapX = -width/2 + player.W/2;
   }
-  if (mapY > map.mapH - height/2 - playerH/2){
-    mapY = map.mapH - height/2 - playerH/2;
+  if (mapY > map.mapH - height/2 - player.H/2){
+    mapY = map.mapH - height/2 - player.H/2;
   }
-  if (mapY < -height/2 + playerH/2){
-    mapY = -height/2 + playerH/2;
+  if (mapY < -height/2 + player.H/2){
+    mapY = -height/2 + player.H/2;
   }
 
   /*
@@ -77,7 +73,7 @@ void draw()
   */
   
   fill(30,150,10);
-  rect(playerX, playerY, playerW, playerH);
+  rect(player.X, player.Y, player.W, player.H);
 }
 
 /*
