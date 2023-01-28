@@ -42,3 +42,7 @@ b. Player - Appearance - Abilities
 - Map creation: Create an end-to-end map. Map has 1 path to the end with some hidden paths leading to rewards or keys… (depends on task systems in iteration 3).
 - Player movement: 4 or 8 directions?
 - Collision Detection: Detect collisions between players and other objects (walls, floor, traps)
+
+### Resource:
+
+[Top-down movement](https://discourse.processing.org/t/top-down-game-template/22770)
