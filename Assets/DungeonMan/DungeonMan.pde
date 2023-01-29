@@ -45,12 +45,23 @@ void mainMenu(){
   //text("Far From Home", width*0.5, height*0.22);
   //text("Press Enter to Start", width*0.5, height*0.9);
   image(frog,0,0,width,width);
+}
 
+void healthBar(){
+  // draw heart image and number 
+  int offset_x = 10;
+  int offset_y = 10;
+  PImage healthDisplay = loadImage("frog2.png");
+  fill(255, 214, 64);
+  image(healthDisplay,offset_x,offset_y,playerSize*0.6,playerSize*0.6*13/16);
+  //textAlign(LEFT, TOP);
 
+  textFont(font,playerSize*0.4);
+  text(player.health,offset_x+20+playerSize*0.4,offset_y+5+playerSize*0.4);
 }
 
 void setup() {
-  size(600 , 600);
+  size(700 , 700);
   initStage(level);
   smooth();
   frameRate(15);
@@ -115,10 +126,6 @@ void draw(){
         fill(255, 255,0); 
       }
       
-      
-      //fill(255, 255,0);
-      ////rect(0,0,2900,3200);
-      //fill(80);
       if(abs(dx) > 0 || abs(dy) > 0){
         anime_t ++;
       }else{
@@ -197,86 +204,10 @@ void draw(){
       textSize(32);
       text("Press Enter to Play Again", width/2, height/2 + 100);
     }
-    
-    //int x_index = int(x / width);
-    //int y_index = int(y / height);
-    //camera_x += (x_index * width - camera_x) * 0.1;
-    //camera_y += (y_index * width - camera_y) * 0.1;
     camera_x = player.x - width/2 + playerSize/2;
     camera_y = player.y - height/2 + playerSize/2;
-     //camera_x = x_index * width;
-     //camera_y = y_index * width;
-    //printArray(new int[] {x,y,x_index,y_index,camera_x,camera_y});
-   
-    //  if(x < 0 || x > cols*blockSize){
-    //    x = cols*blockSize - x;
-    //  }
-    //  if(y < 0 || y > rows*blockSize){
-    //    y = rows*blockSize - y;
-    //  }
-      
-    //  for(int i=0; i<mapList.length; i++){
-    //    int block_x = i % cols * blockSize;
-    //    int block_y = int(i / cols) * blockSize;
-        
-    //    if(isHit(x, y, playerSize, playerSize, block_x, block_y, blockSize, blockSize) == 1){
-    //      if(mapList[i] == 99){
-    //        x = prev_x;
-    //        y = prev_y;
-    //        //soundManager.attack();
-    //      }
-    //      if(mapList[i] == 1){
-    //        if(clear_flag == 0){
-    //          clear_flag = 1;
-    //          //soundManager.bass(); 
-    //        }
-            
-    //      }
-    //    }
-        
-    //  }
-      
-    //  renderMap(tree,ground);
-    //  renderPlayer(x, y, dx, dy, frog);
-    
-    //  for(int i=0; i<mapList.length; i++){
-    //    int block_x = i % cols * blockSize;
-    //    int block_y = int(i / cols) * blockSize;
-    //    if(mapList[i] == 2){ //start point
-    //      //fill(0, 0,20,50); 
-    //      rect(block_x - camera_x, block_y - camera_y, blockSize, blockSize);
-    //    }
-        
-    //  }
-      
-    //  if(clear_flag == 1){
-    //    fill(0, 100);
-    //    rect(0, 0, width, height);
-    //    textAlign(CENTER, CENTER);
-        
-    //    textSize(32);
-    //    fill(255);
-    //    text("STAGE " + (level + 1) + "/" + stageList.length, width/2, height/2 - 100);
-        
-    //    textSize(64);
-    //    fill(255);
-    //    text("CLEAR", width/2, height/2);
-        
-    //    textSize(32);
-    //    fill(255);
-    //    text("Press Enter to Next", width/2, height/2 + 100);
-    //  }
-      
-    //  //int x_index = int(x / width);
-    //  //int y_index = int(y / height);
-    //  //camera_x += (x_index * width - camera_x) * 0.1;
-    //  //camera_y += (y_index * width - camera_y) * 0.1;
-    //  camera_x = x - width/2 + playerSize/2;
-    //  camera_y = y - height/2 + playerSize/2;
-    //   //camera_x = x_index * width;
-    //   //camera_y = y_index * width;
-    //  //printArray(new int[] {x,y,x_index,y_index,camera_x,camera_y});
-    //}
+    healthBar();
+
   }
   
 }//end draw
