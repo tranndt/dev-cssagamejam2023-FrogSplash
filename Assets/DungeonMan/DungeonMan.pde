@@ -1,17 +1,23 @@
-//int x = 120;
-int x = 0;
-int y = 0;
-int cols = 29;
-int rows = 32;
 int dx = 0;
 int dy = 0;
-int[] mapList;
 int camera_x = 0;
 int camera_y = 0;
 int clear_flag = 0;
 int level = 0;
 
 int windowBlocks = 7;
+//int blockSize = 0;
+Player player = new Player();
+int prev_x;
+int prev_y;
+char up = 'w';
+char down = 's';
+char left = 'a';
+char right = 'd';
+int anime_t = 0;
+
+Map map = new Map(level);
+Tile[] mapTile = map.createTile();
 int blockSize = 50;
 int playerSize = (int) (blockSize*0.8);
 PImage[] tree = new PImage[12];
@@ -57,8 +63,7 @@ int[][] stageList = {
 
 };
 
-int anime_t = 0;
-
+//int anime_t = 0;
 int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
 
 void mainMenu(){
@@ -101,57 +106,89 @@ void draw(){
       if (key == ENTER || keyCode == ENTER) stage = 1;
   }
   else if (stage == 1){
-    fill(255, 255,0);
-    //rect(0,0,2900,3200);
-    fill(80);
-    if(abs(dx) > 0 || abs(dy) > 0){
-      anime_t ++;
-    }else{
-      anime_t = 0; 
+    // Tien's code
+    prev_x = player.x;
+    prev_y = player.y;
+    player.x += dx * 5;
+    player.y += dy * 5;
+    
+    if(player.x < 0 || player.x > map.cols*100){
+      player.x = map.cols*100 - player.x;
+    }
+    if(player.y < 0 || player.y > map.rows*100){
+      player.y = map.rows*100 - player.y;
     }
     
-    int prev_x = x;
-    int prev_y = y;
-    x += dx * 15;
-    y += dy * 15;
-    
-    if(x < 0 || x > cols*blockSize){
-      x = cols*blockSize - x;
-    }
-    if(y < 0 || y > rows*blockSize){
-      y = rows*blockSize - y;
-    }
-    
-    for(int i=0; i<mapList.length; i++){
-      int block_x = i % cols * blockSize;
-      int block_y = int(i / cols) * blockSize;
-      
-      if(isHit(x, y, playerSize, playerSize, block_x, block_y, blockSize, blockSize) == 1){
-        if(mapList[i] == 99){
-          x = prev_x;
-          y = prev_y;
-          //soundManager.attack();
-        }
-        if(mapList[i] == 1){
-          if(clear_flag == 0){
-            clear_flag = 1;
-            //soundManager.bass(); 
-          }
-          
-        }
+    for(int i=0; i<map.length_; i++){
+      int block_x = i % map.cols * 100;
+      int block_y = int(i / map.cols) * 100;
+      if(isHit(player.x, player.y, playerSize, playerSize, block_x, block_y, 100, 100) == 1){
+          trap(i);
+      }else{
+        mapTile[i].deactivated = false;
+      }
+ 
+      push();
+      //render color
+      fill(80);
+      if(mapTile[i].type == 99){ //wall
+        fill(150);
+      }
+      if(mapTile[i].type == 2){ //start
+        fill(80, 255); 
+      }
+      if(mapTile[i].type == 4){ //death
+        fill(255, 255,0); 
       }
       
-    }
+      
+      //fill(255, 255,0);
+      ////rect(0,0,2900,3200);
+      //fill(80);
+      //if(abs(dx) > 0 || abs(dy) > 0){
+      //  anime_t ++;
+      //}else{
+      //  anime_t = 0; 
+      //}
+      
+      if(mapTile[i].type == 990){ //path but looks like wall
+        fill(140); 
+      }
+      if(mapTile[i].type == 11){  //spike
+        if(frameCount % (4*frameRate) <= frameRate){
+          fill(0);
+          mapTile[i].deactivated = false;
+        }
+        else{
+          fill(80);
+          mapTile[i].deactivated = true;
+        }
+      }
+      if(mapTile[i].type == 3 && mapTile[i].showKey ==  true){ //key color
+        fill(100,90,100);
+      }
+      
+       rect(block_x - camera_x, block_y - camera_y, 100, 100);
+        
+      if(mapTile[i].type == 1){
+        fill(0, 200, 255);
+        rect(block_x + 10 - camera_x, block_y + 10 - camera_y, 100-20, 100-20, 5);
+      }
+      pop();
+      
+    }//end for loop 
     
-    renderMap(tree,ground);
-    renderPlayer(x, y, dx, dy, frog);
+    //renderPlayer(player.x, player.y, dx, dy);
+    
+      renderMap(tree,ground);
+      renderPlayer(player.x, player.y, dx, dy, frog);
   
-    for(int i=0; i<mapList.length; i++){
-      int block_x = i % cols * blockSize;
-      int block_y = int(i / cols) * blockSize;
-      if(mapList[i] == 2){ //start point
-        //fill(0, 0,20,50); 
-        rect(block_x - camera_x, block_y - camera_y, blockSize, blockSize);
+    for(int i=0; i<map.length_; i++){
+      int block_x = i % map.cols * 100;
+      int block_y = int(i / map.cols) * 100;
+      if(mapTile[i].type == 2){
+        fill(0, 0,20,50); 
+        rect(block_x - camera_x, block_y - camera_y, 100, 100);
       }
       
     }
@@ -163,7 +200,7 @@ void draw(){
       
       textSize(32);
       fill(255);
-      text("STAGE " + (level + 1) + "/" + stageList.length, width/2, height/2 - 100);
+      text("STAGE " + (level + 1) + "/" + map.num_map, width/2, height/2 - 100);
       
       textSize(64);
       fill(255);
@@ -174,16 +211,105 @@ void draw(){
       text("Press Enter to Next", width/2, height/2 + 100);
     }
     
+    if(clear_flag == -1){
+      fill(0, 100);
+      rect(0, 0, width, height);
+      textAlign(CENTER, CENTER);
+      
+      textSize(32);
+      fill(255);
+      text("STAGE " + (level + 1) + "/" + map.num_map, width/2, height/2 - 100);
+      
+      textSize(64);
+      fill(255);
+      text("You Lost", width/2, height/2);
+      
+      textSize(32);
+      fill(255);
+      text("Press Enter to Play Again", width/2, height/2 + 100);
+    }
+    
     //int x_index = int(x / width);
     //int y_index = int(y / height);
     //camera_x += (x_index * width - camera_x) * 0.1;
     //camera_y += (y_index * width - camera_y) * 0.1;
-    camera_x = x - width/2 + playerSize/2;
-    camera_y = y - height/2 + playerSize/2;
+    camera_x = player.x - width/2 + playerSize/2;
+    camera_y = player.y - height/2 + playerSize/2;
      //camera_x = x_index * width;
      //camera_y = y_index * width;
     //printArray(new int[] {x,y,x_index,y_index,camera_x,camera_y});
-  }
+   
+    //  if(x < 0 || x > cols*blockSize){
+    //    x = cols*blockSize - x;
+    //  }
+    //  if(y < 0 || y > rows*blockSize){
+    //    y = rows*blockSize - y;
+    //  }
+      
+    //  for(int i=0; i<mapList.length; i++){
+    //    int block_x = i % cols * blockSize;
+    //    int block_y = int(i / cols) * blockSize;
+        
+    //    if(isHit(x, y, playerSize, playerSize, block_x, block_y, blockSize, blockSize) == 1){
+    //      if(mapList[i] == 99){
+    //        x = prev_x;
+    //        y = prev_y;
+    //        //soundManager.attack();
+    //      }
+    //      if(mapList[i] == 1){
+    //        if(clear_flag == 0){
+    //          clear_flag = 1;
+    //          //soundManager.bass(); 
+    //        }
+            
+    //      }
+    //    }
+        
+    //  }
+      
+    //  renderMap(tree,ground);
+    //  renderPlayer(x, y, dx, dy, frog);
+    
+    //  for(int i=0; i<mapList.length; i++){
+    //    int block_x = i % cols * blockSize;
+    //    int block_y = int(i / cols) * blockSize;
+    //    if(mapList[i] == 2){ //start point
+    //      //fill(0, 0,20,50); 
+    //      rect(block_x - camera_x, block_y - camera_y, blockSize, blockSize);
+    //    }
+        
+    //  }
+      
+    //  if(clear_flag == 1){
+    //    fill(0, 100);
+    //    rect(0, 0, width, height);
+    //    textAlign(CENTER, CENTER);
+        
+    //    textSize(32);
+    //    fill(255);
+    //    text("STAGE " + (level + 1) + "/" + stageList.length, width/2, height/2 - 100);
+        
+    //    textSize(64);
+    //    fill(255);
+    //    text("CLEAR", width/2, height/2);
+        
+    //    textSize(32);
+    //    fill(255);
+    //    text("Press Enter to Next", width/2, height/2 + 100);
+    //  }
+      
+    //  //int x_index = int(x / width);
+    //  //int y_index = int(y / height);
+    //  //camera_x += (x_index * width - camera_x) * 0.1;
+    //  //camera_y += (y_index * width - camera_y) * 0.1;
+    //  camera_x = x - width/2 + playerSize/2;
+    //  camera_y = y - height/2 + playerSize/2;
+    //   //camera_x = x_index * width;
+    //   //camera_y = y_index * width;
+    //  //printArray(new int[] {x,y,x_index,y_index,camera_x,camera_y});
+    //}
+}
+  
 }
 
 void printArray(int [] array){
@@ -193,44 +319,46 @@ void printArray(int [] array){
   println();
 }
 
-
 void keyPressed(){
   //if(bgm.isPlaying() == false){
   //  bgm.loop();
   //}
-  if(keyCode == 'a' || key == 'a'){
+  if(keyCode == left || key == left){
     dx = -1;
   }
-  if(keyCode == 'd'  || key == 'd'){
+  if(keyCode == right  || key == right){
     dx = 1;
   }
-  if(keyCode == 'w'  || key == 'w'){
+  if(keyCode == up  || key == up){
     dy = -1;
   }
-  if(keyCode == 's'  || key == 's'){
+  if(keyCode == down  || key == down){
     dy = 1;
   }
   if(keyCode == ENTER){
     if(clear_flag == 1){
       level ++;
-      level = level % stageList.length;
+      level = level % map.num_map;
       initStage(level); 
+    }
+    if(clear_flag == -1){
+      initStage(level);
     }
   }
 }
 
 
 void keyReleased(){
-  if(keyCode == 'a' || key == 'a' ){
+  if(keyCode == left || key == left ){
     if(dx < 0)  dx = 0;
   }
-  if(keyCode == 'd' || key == 'd'){
+  if(keyCode == right || key == right){
     if(dx > 0)  dx = 0;
   }
-  if(keyCode == 'w' || key == 'w'){
+  if(keyCode == up || key == up){
     if(dy < 0)  dy = 0;
   }
-  if(keyCode == 's' || key == 's'){
+  if(keyCode == down || key == down){
     if(dy > 0)  dy = 0;
   }
 }
@@ -258,31 +386,31 @@ void renderPlayer(int x, int y, int dx, int dy, PImage[] frog){
 }
 
 void renderMap(PImage[] tree, PImage[] ground){
-  for(int i=0; i<mapList.length; i++){
-    int block_x = i % cols * blockSize;
-    int block_y = int(i / cols) * blockSize;
+  for(int i=0; i<map.length_; i++){
+    int block_x = i % map.cols * blockSize;
+    int block_y = int(i / map.cols) * blockSize;
     
     pushMatrix();
     fill(80);
-    if(mapList[i] == 99){ //wall
+    if(mapTile[i].type == 99){ //wall
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(tree[i%tree.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       //fill(150);
     }
-    if(mapList[i] == 2){
+    if(mapTile[i].type == 2){
       fill(80, 255); 
     }
-    if(mapList[i] == 4){
+    if(mapTile[i].type == 4){
       fill(255, 255,0); 
     }
     
-    if(mapList[i] == 0){ //path
+    if(mapTile[i].type == 0){ //path
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
     //rect(block_x - camera_x, block_y - camera_y, 100, 100);
     
-    if(mapList[i] == 1){ //target
+    if(mapTile[i].type == 1){ //target
       fill(0, 200, 255);
       rect(block_x + 10 - camera_x, block_y + 10 - camera_y, blockSize-20, blockSize-20, 5);
     }
@@ -292,22 +420,28 @@ void renderMap(PImage[] tree, PImage[] ground){
 }
 
 void initStage(int level){
-  level = level % stageList.length;
-  mapList = stageList[level];
-  initPlayerPos(level);
+  level = level % map.num_map;
+  map = new Map(level);
+  mapTile = map.createTile();
+  player = new Player();
+  initPlayerPos(2);
+  reverseKey('a','d','w','s');
+  frameRate(60);
   clear_flag = 0;
 }
 
-void initPlayerPos(int level){
+void initPlayerPos(int position){
   int index = 0;
-  for (int i = 0; i < stageList[level].length; i ++){
-    if (stageList[level][i] == 2){
+  for (int i = 0; i < map.length_; i ++){
+    if (mapTile[i].type == position){
       index = i;
       break;
     }
   }
-  x = index%cols * blockSize;
-  y = (int)(index/cols) * blockSize;
+  player.x = index%map.cols * blockSize;
+  player.y = (int)(index/map.cols) * blockSize;
+  //x = index%cols * blockSize;
+  //y = (int)(index/cols) * blockSize;
 
 }
 
@@ -318,4 +452,128 @@ int isHit(int px, int py, int pw, int ph, int ex, int ey, int ew, int eh){
     }
   }
   return 0;
+}
+void trap(int i){
+  
+  //Wall
+  if(mapTile[i].type == 99 || mapTile[i].type == 909){
+    player.x = prev_x;
+    player.y = prev_y;
+        //soundManager.attack();
+  }
+  
+  
+  //finish tile
+  if(mapTile[i].type == 1){
+    if(clear_flag == 0){
+      clear_flag = 1;
+      //soundManager.bass();
+    }
+  }
+  
+  
+  //loop back to start
+  if(mapTile[i].type == 82){
+    initStage(0);
+  }
+  
+  
+  //death
+  if(mapTile[i].type == 4 && mapTile[i].deactivated == false){
+    player.health = 0;
+    mapTile[i].deactivated = true;
+    clear_flag = -1;
+    print("Death");
+  }
+  
+  
+  //build wall
+  if(mapTile[i].type == 69 && mapTile[i].deactivated == false){
+    map.randomWall(i);
+    mapTile[i].deactivated = true;
+  }
+  
+  //build path
+  if(mapTile[i].type == 96 && mapTile[i].deactivated == false){
+    map.randomPath(i);
+    mapTile[i].deactivated = true;
+  }
+  
+  //spike
+  if(mapTile[i].type == 11 && mapTile[i].deactivated == false){
+    player.health--;
+    if(dx < 0){
+      dx += 4;
+    }else{
+      dx -= 4;
+    }
+    if(dy < 0){
+      dy += 4;
+    }else{
+      dy -= 4;
+    }
+    if(dx == 0 && dy == 0){
+      dx +=4;
+    }
+    print(player.health);
+    mapTile[i].deactivated = true;
+  }
+  
+  //add health
+  if(mapTile[i].type == 6 && mapTile[i].deactivated == false){
+    player.health++;
+    print(player.health);
+    mapTile[i].deactivated = true;
+  }
+  
+  //x2 speed
+  if(mapTile[i].type == 5 && mapTile[i].deactivated == false){
+    frameRate(120);
+    mapTile[i].deactivated = true;
+  }
+  
+  //first time step on 333
+  if(mapTile[i].type == 333 && mapTile[i].deactivated == false && mapTile[i].first == false){
+    for(int j=0; j<map.length_;j++){
+      if(mapTile[j].type == 3){
+        mapTile[j].showKey = true;
+      }      
+    }
+    mapTile[i].first = true;
+  }else if(mapTile[i].type == 333 && mapTile[i].deactivated == false && mapTile[i].first == true){ //bomb
+    if(player.numKey >= 3){
+      map.bomb(i);
+      mapTile[i].deactivated = true;
+    }
+  }
+  
+  //key 
+  if(mapTile[i].type == 3 && mapTile[i].deactivated == false && mapTile[i].showKey == true){
+    player.numKey++;
+    mapTile[i].showKey = false;
+    mapTile[i].deactivated = true;
+  }
+  
+  //teleport
+  if(mapTile[i].type == 86 && mapTile[i].deactivated == false){
+    initPlayerPos(68);
+    mapTile[i].deactivated = true;
+  }
+  
+  //shuffle controls
+  if(mapTile[i].type == 420 && mapTile[i].deactivated == false){
+    if(left == 'a'){
+      reverseKey('d','a','s','w');
+    }else{
+      reverseKey('a','d','w','s');
+    }
+    mapTile[i].deactivated = true;
+  }//420
+}//end trap
+
+void reverseKey(char left_, char right_, char up_, char down_){
+  left = left_;
+  right = right_;
+  up = up_;
+  down = down_;
 }
