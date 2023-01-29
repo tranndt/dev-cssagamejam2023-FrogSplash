@@ -201,6 +201,16 @@ void draw(){
           mapTile[i].deactivated = true;
         }
       }
+      if(mapTile[i].type == 4){  //instant death
+        if(frameCount % (1.1*frameRate) <= frameRate){
+          fill(250);
+          mapTile[i].deactivated = false;
+        }
+        else{
+          fill(0);
+          mapTile[i].deactivated = true;
+        }
+      }     
       if(mapTile[i].type == 3 && mapTile[i].showKey ==  true){ //key color
         fill(100,90,100);
       }
