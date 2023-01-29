@@ -1,3 +1,5 @@
+import processing.sound.*;
+SoundFile file;
 int dx = 0;
 int dy = 0;
 int camera_x = 0;
@@ -38,7 +40,9 @@ PImage[] tnt = new PImage[19];
 PImage[] spike = new PImage[5];
 PImage[] health = new PImage[8];
 PImage[] bomb = new PImage[10];
+PImage[] start = new PImage[12];
 PImage house;
+//PFont font;
 int[][] stageList = {
   {
     99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
@@ -78,7 +82,6 @@ int[][] stageList = {
 };
 
 int anime_t = 0;
-
 int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
 
 void mainMenu(){
@@ -120,6 +123,14 @@ void setup() {
   initStage(level);
   smooth();
   frameRate(15);
+  
+  ////this loads the file based on the file name
+  //file = new SoundFile(this,"");
+  //file.play();
+  
+  ////this changes the volume level (number between 0 and 1)
+  //file.amp(.5);
+  
   for (int i = 0; i < frog.length; i++){
     frog[i] = loadImage("frog" +i+ ".png");
   }
@@ -160,6 +171,11 @@ void setup() {
   }
   for (int i = 0; i < bomb.length; i++){
     bomb[i] = loadImage((i+1)+".png");
+  }
+  for (int i = 0; i < start.length-2; i++){
+    start[i] = loadImage("start"+i+".png");
+    start[i+1] = loadImage("start"+i+".png");
+    start[i+2] = loadImage("start"+i+".png");
   }
   house = loadImage("house.png");
 }
@@ -226,6 +242,16 @@ void draw(){
           mapTile[i].deactivated = true;
         }
       }
+      if(mapTile[i].type == 4){  //instant death
+        if(frameCount % (1.1*frameRate) <= frameRate){
+          fill(250);
+          mapTile[i].deactivated = false;
+        }
+        else{
+          fill(0);
+          mapTile[i].deactivated = true;
+        }
+      }     
       if(mapTile[i].type == 3 && mapTile[i].showKey ==  true){ //key color
         fill(100,90,100);
       }
@@ -244,7 +270,7 @@ void draw(){
     
     renderMap(tree,ground);
     renderPlayer(player.x, player.y, dx, dy, frog);
-    if (clear_flag == -1 || clear_flag == 1){
+    if (clear_flag == -1 || player.health <= 0 || clear_flag == -2){
       if(clear_flag == 1){
         fill(0, 100);
         rect(0, 0, width, height);
@@ -261,7 +287,7 @@ void draw(){
         textSize(32);
         text("Press Enter to Play Again", width/2, height/2 + 100);
       }
-      if(clear_flag == -1){
+      if(clear_flag == -2 || player.health <= 0){
           fill(0, 130);
           rect(0, 0, width, height);
           textAlign(CENTER, CENTER);
@@ -282,6 +308,7 @@ void draw(){
       player.x = -100;
       player.y = -100;
     }
+    
     else{
       camera_x = player.x - width/2 + playerSize/2;
       camera_y = player.y - height/2 + playerSize/2;
@@ -306,7 +333,7 @@ void keyPressed(){
   //  bgm.loop();
   //}
   if(keyCode == left || key == left){
-    print("keypressed");
+    //print("keypressed");
     dx = -1;
   }
   if(keyCode == right  || key == right){
@@ -477,7 +504,7 @@ void trap(int i){
     player.health = 0;
     player.playerSpeed = 0;
     mapTile[i].deactivated = true;
-    clear_flag = -1;
+    clear_flag = -2;
   }
   
   
@@ -525,7 +552,7 @@ void trap(int i){
   //add health
   if(mapTile[i].type == 6 && mapTile[i].deactivated == false){
     player.health++;
-    print(player.health);
+    //print(player.health);
     mapTile[i].type = 0;
     mapTile[i].deactivated = true;
   }
