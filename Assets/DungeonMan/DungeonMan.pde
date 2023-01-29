@@ -12,7 +12,9 @@ int clear_flag = 0;
 int level = 0;
 int playerSize = 75;
 int windowBlocks = 7;
-int blockSize = 0;
+int blockSizeX;
+PImage[] tree = new PImage[5];
+PImage[] frog = new PImage[8];
 
 int[][] stageList = {
   //{
@@ -87,6 +89,12 @@ int anime_t = 0;
 void setup() {
   size(600 , 600);
   initStage(level);
+  for (int i = 0; i < frog.length; i++){
+    frog[i] = loadImage("frog" +i+ ".png");
+  }
+  for (int i = 0; i < tree.length; i++){
+    tree[i] = loadImage(i + ".png");
+  }
 }
 
 void draw(){
@@ -121,7 +129,7 @@ void draw(){
       if(mapList[i] == 1){
         if(clear_flag == 0){
           clear_flag = 1;
-          //soundManager.bass();
+          //soundManager.bass(); 
         }
         
       }
@@ -130,7 +138,8 @@ void draw(){
     
     fill(80);
     if(mapList[i] == 99){
-      fill(150);
+      image(tree[1],block_x,block_y,100,100);
+      //fill(150);
     }
     if(mapList[i] == 2){
       fill(80, 255); 
@@ -139,7 +148,7 @@ void draw(){
       fill(255, 255,0); 
     }
     
-    rect(block_x - camera_x, block_y - camera_y, 100, 100);
+    //rect(block_x - camera_x, block_y - camera_y, 100, 100);
     
     if(mapList[i] == 1){
       fill(0, 200, 255);
@@ -149,7 +158,7 @@ void draw(){
   }
   
   
-  renderPlayer(x, y, dx, dy);
+  renderPlayer(x, y, dx, dy, frog);
 
   for(int i=0; i<mapList.length; i++){
     int block_x = i % cols * 100;
@@ -240,7 +249,7 @@ void keyReleased(){
   }
 }
 
-void renderPlayer(int x, int y, int dx, int dy){
+void renderPlayer(int x, int y, int dx, int dy, PImage[] frog){
   float attach_x = 0;
   float attach_y = sin(radians(anime_t*15)) * 1;
   if(dx < 0){
@@ -249,11 +258,15 @@ void renderPlayer(int x, int y, int dx, int dy){
   if(dx > 0){
     attach_x = 3;
   }
-  fill(255);
-  rect(x - camera_x, y + attach_y - camera_y, playerSize, playerSize - attach_y, playerSize/4);
-  fill(80);
-  ellipse(x + playerSize/2 - 10 + attach_x - camera_x, y + 20 + attach_y - camera_y, 5, 5);
-  ellipse(x + playerSize/2 + 10 + attach_x - camera_x, y + 20 + attach_y - camera_y, 5, 5);
+//  fill(255);
+//  rect(x - camera_x, y + attach_y - camera_y, playerSize, playerSize - attach_y, playerSize/4);
+//  fill(80);
+//  ellipse(x + playerSize/2 - 10 + attach_x - camera_x, y + 20 + attach_y - camera_y, 5, 5);
+//  ellipse(x + playerSize/2 + 10 + attach_x - camera_x, y + 20 + attach_y - camera_y, 5, 5);
+  for (int i = 0; i < frog.length; i++){
+    image(frog[0], x - camera_x, y + attach_y - camera_y, playerSize, playerSize - attach_y);
+  }
+  
 }
 
 void initStage(int level){
