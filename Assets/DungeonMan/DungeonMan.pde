@@ -22,15 +22,15 @@ PImage[] tree = new PImage[13];
 PImage[] frog = new PImage[8];
 PImage[] ground = new PImage[5];
 PImage[] water = new PImage[14];
-PFont font;
-
-PImage[] goal = new PImage[6];
-
 PImage[] tnt = new PImage[19];
 PImage[] spike = new PImage[5];
 PImage[] health = new PImage[8];
 PImage[] bomb = new PImage[10];
+PImage[] start = new PImage[12];
 PImage house;
+PFont font;
+
+
 int[][] stageList = {
   {
     99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
@@ -134,6 +134,11 @@ void setup() {
   }
   for (int i = 0; i < bomb.length; i++){
     bomb[i] = loadImage((i+1)+".png");
+  }
+  for (int i = 0; i < start.length-2; i++){
+    start[i] = loadImage("start"+i+".png");
+    start[i+1] = loadImage("start"+i+".png");
+    start[i+2] = loadImage("start"+i+".png");
   }
   house = loadImage("house.png");
 }
