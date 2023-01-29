@@ -459,17 +459,17 @@ void trap(int i){
   if(mapTile[i].type == 11 && mapTile[i].deactivated == false){
     player.health--;
     if(dx < 0){
-      dx += 4;
+      dx += 1;
     }else{
-      dx -= 4;
+      dx -= 1;
     }
     if(dy < 0){
-      dy += 4;
+      dy += 1;
     }else{
-      dy -= 4;
+      dy -= 1;
     }
     if(dx == 0 && dy == 0){
-      dx +=4;
+      dx +=1;
     }
     print(player.health);
     mapTile[i].deactivated = true;
