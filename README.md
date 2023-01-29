@@ -4,6 +4,8 @@
 
 ## Theme: GLITCH
 
+## Game name: Frog Splash - Far From Home
+
 **Team members:**
 
 - Jase Tran
@@ -13,7 +15,10 @@
 
 ## Introduction:
 
-Top down 2D trap adventure game. The path is filled with non-obvious traps with a glitch: they don’t always activate. Whenever one does and the player dies and has to replay their path, one of such previously unactivated traps might suddenly do, adding another layer of suspense to the player. Player wins when they get to the end of the map, and is welcomed with a pleasant surprise.
+Top-down dungeon-crawler 2D trap adventure game. Play as a frog trying to find its way home. The path is filled with non-obvious traps with a glitch: some of them don’t always activate, adding another layer of suspense to the player. Player wins when the frog gets home, and is welcomed with a pleasant surprise.
+
+"“Thus fear of danger is ten thousand times more terrifying than danger itself when apparent to the eyes; and we find the burden of anxiety greater, by much, than the evil which we are anxious about...” - Daniel Defoe, Robinson Crusoe.
+
 
 ## Game Design:
 
@@ -25,25 +30,24 @@ Top down 2D trap adventure game. The path is filled with non-obvious traps with 
 
     a. Inspo
      - [Trap Adventure 2 #001 - YouTube](https://www.youtube.com/watch?v=C1ObitoLwhM)
-     - Mario platformer
-     - Dungeon crawler
+     - Mario platformer.
+     - Dungeon crawler.
 
     b. Player 
-      - Appearance
-      - Abilities
+      - Has 10 health.
 
 3. Game Logic/Interaction
-
-   - Traps
+   - Player dies when health reaches 0 or player steps on 'instant-death' tile.
+   - Traps (visible, invisible).
+   - Main-story quests (find dynamites to activate bomb).
+   - Easter eggs.
 
 ## Iterations:
 
 ### 1. First Iteration: ###
 
 - Map creation: Create an end-to-end map. Map has 1 path to the end with some hidden paths leading to rewards or keys… (depends on task systems in iteration 3).
-- Player movement: 
-    - 4 or 8 directions?
-    - Shoot? (COuld have hidden walls that reflect the shoot)
+- Player movement:
 - Collision Detection:
     - Trigger (Soft Collision): taps, pressure plate, floor tiles, item, end goal
     - hard Collision: Walls, immovanle objects
