@@ -38,8 +38,9 @@ Top-down dungeon-crawler 2D trap adventure game. Play as a frog trying to find i
 
 3. Game Logic/Interaction
    - Player dies when health reaches 0 or player steps on 'instant-death' tile.
+   - Items to replenish health.
    - Traps (visible, invisible).
-   - Main-story quests (find dynamites to activate bomb).
+   - Main-story quests (find dynamites to activate bomb, etc.).
    - Easter eggs.
 
 ## Iterations:
