@@ -13,6 +13,7 @@ char up = 'w';
 char down = 's';
 char left = 'a';
 char right = 'd';
+boolean boom =false;
 
 Map map = new Map(level);
 Tile[] mapTile = map.createTile();
@@ -252,7 +253,9 @@ void draw(){
     camera_x = player.x - width/2 + playerSize/2;
     camera_y = player.y - height/2 + playerSize/2;
     healthBar();
-    
+    if(boom){
+      boomBar();
+    }
   }
   
 }//end draw
@@ -283,13 +286,16 @@ void keyPressed(){
   }
   if(keyCode == ENTER){
     if(clear_flag == 1){
-      level ++;
+      //level ++;
       level = level % map.num_map;
       initStage(level); 
     }
     if(clear_flag == -1){
       initStage(level);
     }
+  }
+  if(keyCode == 'r' || key == 'r'){
+    initStage(level);
   }
 }
 
@@ -335,7 +341,7 @@ void renderMap(PImage[] tree, PImage[] ground){
     
     pushMatrix();
     fill(80);
-    if(mapTile[i].type == 99){ //wall
+    if(mapTile[i].type == 99 || mapTile[i].type == 990){ //wall
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(tree[i%tree.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       //fill(150);
@@ -347,7 +353,7 @@ void renderMap(PImage[] tree, PImage[] ground){
       fill(255, 255,0); 
     }
     
-    if(mapTile[i].type == 0){ //path
+    if(mapTile[i].type == 0 || mapTile[i].type == 909){ //path
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
@@ -376,7 +382,7 @@ void renderMap(PImage[] tree, PImage[] ground){
 
     }
     if(mapTile[messageIndex].showKey == true){
-      boomBar();
+      boom = true;
     }
     popMatrix();
   }
@@ -419,7 +425,7 @@ int isHit(int px, int py, int pw, int ph, int ex, int ey, int ew, int eh){
 void trap(int i){
   
   //Wall
-  if(mapTile[i].type == 99 || mapTile[i].type == 909){
+  if((mapTile[i].type == 99 || mapTile[i].type == 909)){
     player.x = prev_x;
     player.y = prev_y;
         //soundManager.attack();
@@ -430,6 +436,7 @@ void trap(int i){
   if(mapTile[i].type == 1){
     if(clear_flag == 0){
       clear_flag = 1;
+      player.playerSpeed = 0;
       //soundManager.bass();
     }
   }
@@ -451,9 +458,10 @@ void trap(int i){
   
   
   //build wall
-  if(mapTile[i].type == 69 && mapTile[i].deactivated == false){
+  if(mapTile[i].type == 69 && mapTile[i].deactivated == false && mapTile[i].first == false){
     map.randomWall(i);
     mapTile[i].deactivated = true;
+    mapTile[i].first = true;
   }
   
   //build path
@@ -499,9 +507,10 @@ void trap(int i){
   }
   
   //x2 speed
-  if(mapTile[i].type == 5 && mapTile[i].deactivated == false){
+  if(mapTile[i].type == 5 && mapTile[i].deactivated == false && mapTile[i].first == false){
     player.playerSpeed = player.playerSpeed*2;
     mapTile[i].deactivated = true;
+    mapTile[i].first = true;
   }
   
   //first time step on 333
