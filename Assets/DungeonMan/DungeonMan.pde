@@ -285,16 +285,6 @@ void keyPressed(){
     dy = 1;
   }
   if(keyCode == ENTER){
-    if(clear_flag == 1){
-      //level ++;
-      level = level % map.num_map;
-      initStage(level); 
-    }
-    if(clear_flag == -1){
-      initStage(level);
-    }
-  }
-  if(keyCode == 'r' || key == 'r'){
     initStage(level);
   }
 }
