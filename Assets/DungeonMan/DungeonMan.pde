@@ -19,35 +19,41 @@ Map map = new Map(level);
 Tile[] mapTile = map.createTile();
 int blockSize = 80;
 int playerSize = (int) (blockSize*0.8);
-PImage[] tree = new PImage[12];
+PImage[] tree = new PImage[13];
 PImage[] frog = new PImage[8];
 PImage[] ground = new PImage[5];
+PImage[] water = new PImage[14];
+PImage health;
 PFont font;
 
+PImage[] goal = new PImage[6];
 //int anime_t = 0;
 int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
 
 void mainMenu(){
   // load background - Press enter to start
   font = createFont("Far-From Homecoming Updated.otf",10);
-  PImage frog = loadImage("frog2.png");
-  background(0,80,20,200);
-  textAlign(CENTER, CENTER);
+    //PImage frog = loadImage("frog2.png");
+  PImage frog = loadImage("IntroScreen.jpg");
+  //background(0,80,20,200);
+  //textAlign(CENTER, CENTER);
+  //fill(255, 214, 64);
   textFont(font, height*0.13);
-  text("Frog Splash", width*0.5, height*0.1);
-  textFont(font, height*0.09);
-  fill(255, 214, 64);
-  text("Far From Home", width*0.5, height*0.22);
-  text("Press Enter to Start", width*0.5, height*0.9);
-  image(frog,width*0.15,height*0.25,width*0.7,width*0.7*13/16);
+  //text("Frog Splash", width*0.5, height*0.1);
+  //textFont(font, height*0.09);
+  //fill(255, 214, 64);
+  //text("Far From Home", width*0.5, height*0.22);
+  //text("Press Enter to Start", width*0.5, height*0.9);
+  image(frog,0,0,width,width);
+
 
 }
 
 void setup() {
-  size(700 , 700);
+  size(600 , 600);
   initStage(level);
   smooth();
-  frameRate(20);
+  frameRate(15);
   for (int i = 0; i < frog.length; i++){
     frog[i] = loadImage("frog" +i+ ".png");
   }
@@ -57,6 +63,13 @@ void setup() {
   for (int i = 0; i < ground.length; i++){
     ground[i] = loadImage("grass"+i+".png");
   }
+  for (int i = 0; i < goal.length; i++){
+    goal[i] = loadImage("goal"+i+".png");
+  }
+  for (int i = 0; i < water.length; i++){
+    water[i] = loadImage("water"+i+".png");
+  }
+  health = loadImage("health.png");
 }
 
 void draw(){
@@ -365,6 +378,13 @@ void renderMap(PImage[] tree, PImage[] ground){
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
+    if(mapTile[i].type == 820){ //water
+      image(water[frameCount%water.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
+    }
+    if(mapTile[i].type == 6){ //health
+      image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
+      image(health,block_x-camera_x+blockSize/4,block_y-camera_y+blockSize/4,blockSize*0.5,blockSize*0.5);
+    }
     //rect(block_x - camera_x, block_y - camera_y, 100, 100);
     
     if(mapTile[i].type == 1){ //target
