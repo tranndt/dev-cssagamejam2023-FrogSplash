@@ -30,6 +30,7 @@ PImage[] frogGreen = new PImage[11];
 PImage[] frogYellow = new PImage[11];
 PImage[] frogBlue = new PImage[11];
 PImage[] frogPink = new PImage[11];
+PImage[] frogCrashed = new PImage[7];
 
 
 
@@ -82,7 +83,7 @@ int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
 
 void mainMenu(){
   // load background - Press enter to start
-  font = createFont("Far-From Homecoming Updated.otf",10);
+  //font = createFont("Far-From Homecoming Updated.otf",10);
   //PImage frog = loadImage("frog2.png");
   //font = createFont("Far-From Homecoming Updated.otf",10);
     //textFont(font, height*0.09);
@@ -110,7 +111,7 @@ void healthBar(){
   image(healthDisplay,offset_x,offset_y,playerSize*0.6,playerSize*0.6*13/16);
   //textAlign(LEFT, TOP);
 
-  textFont(font,playerSize*0.4);
+  //textFont(font,playerSize*0.4);
   text(player.health,offset_x+20+playerSize*0.4,offset_y+5+playerSize*0.4);
 }
 
@@ -126,6 +127,10 @@ void setup() {
     String s = i+"";
     if (i < 10) s = "0"+s;
     frogGreen[i] = loadImage("frog_croak_" +s+ ".png");
+  }
+  for (int i = 0; i < frogCrashed.length; i++){
+    String s = i+"";
+    frogCrashed[i] = loadImage("frog_crashed/frame_"+s+"_delay-0.08s.png");
   }
   for (int i = 0; i < frogYellow.length; i++){
     String s = i+"";
@@ -239,42 +244,51 @@ void draw(){
     
     renderMap(tree,ground);
     renderPlayer(player.x, player.y, dx, dy, frog);
+    if (clear_flag == -1 || clear_flag == 1){
+      if(clear_flag == 1){
+        fill(0, 100);
+        rect(0, 0, width, height);
+        textAlign(CENTER, CENTER);
+        
+        textSize(32);
+        //fill(255);
+          fill(255, 214, 64);
+  
+        
+        textSize(64);
+        text("You Found HOME", width/2, height/2);
+        
+        textSize(32);
+        text("Press Enter to Play Again", width/2, height/2 + 100);
+      }
+      if(clear_flag == -1){
+          fill(0, 130);
+          rect(0, 0, width, height);
+          textAlign(CENTER, CENTER);
+          fill(255, 214, 64);
     
-    if(clear_flag == 1){
-      fill(0, 100);
-      rect(0, 0, width, height);
-      textAlign(CENTER, CENTER);
-      
-      textSize(32);
-      //fill(255);
-        fill(255, 214, 64);
-
-      
-      textSize(64);
-      text("You Found HOME", width/2, height/2);
-      
-      textSize(32);
-      text("Press Enter to Play Again", width/2, height/2 + 100);
-    }
+          
+          textSize(50);
+          text("FROGGIE.exe just crashed!", width/2, height/2);
+          
+          textSize(32);
+          text("Press Enter to Play Again", width/2, height/2 + 100);
+          
+        for (int i = 0; i < frogCrashed.length; i++){
+            image(frogCrashed[(int)(frameCount*0.6)%frogCrashed.length], width*0.35, height*0.15,width*0.3, height*0.3*13/16);
     
-    if(clear_flag == -1){
-      fill(0, 100);
-      rect(0, 0, width, height);
-      textAlign(CENTER, CENTER);
-      fill(255, 214, 64);
-
-      
-      textSize(64);
-      text("You LOST", width/2, height/2);
-      
-      textSize(32);
-      text("Press Enter to Play Again", width/2, height/2 + 100);
+        }
+      }
+      player.x = -100;
+      player.y = -100;
     }
-    camera_x = player.x - width/2 + playerSize/2;
-    camera_y = player.y - height/2 + playerSize/2;
-    healthBar();
-    if(boom){
-      boomBar();
+    else{
+      camera_x = player.x - width/2 + playerSize/2;
+      camera_y = player.y - height/2 + playerSize/2;
+      healthBar();
+      if(boom){
+        boomBar();
+      }
     }
   }
   
