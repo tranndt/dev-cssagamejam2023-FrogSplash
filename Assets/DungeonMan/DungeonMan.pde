@@ -14,7 +14,7 @@ int level = 0;
 int windowBlocks = 7;
 int blockSize = 50;
 int playerSize = (int) (blockSize*0.8);
-PImage[] tree = new PImage[5];
+PImage[] tree = new PImage[12];
 PImage[] frog = new PImage[8];
 PImage[] ground = new PImage[5];
 int[][] stageList = {
@@ -96,7 +96,7 @@ void setup() {
     frog[i] = loadImage("frog" +i+ ".png");
   }
   for (int i = 0; i < tree.length; i++){
-    tree[i] = loadImage(i + ".png");
+    tree[i] = loadImage("tree"+ (i+1) + ".png");
   }
   for (int i = 0; i < ground.length; i++){
     ground[i] = loadImage("grass"+i+".png");
