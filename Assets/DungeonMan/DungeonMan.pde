@@ -13,7 +13,6 @@ char up = 'w';
 char down = 's';
 char left = 'a';
 char right = 'd';
-int anime_t = 0;
 
 Map map = new Map(level);
 Tile[] mapTile = map.createTile();
@@ -23,13 +22,10 @@ PImage[] tree = new PImage[13];
 PImage[] frog = new PImage[8];
 PImage[] ground = new PImage[5];
 PImage[] water = new PImage[14];
-<<<<<<< Updated upstream
-PImage health;
 PFont font;
 
 PImage[] goal = new PImage[6];
-//int anime_t = 0;
-=======
+
 PImage[] tnt = new PImage[19];
 PImage[] spike = new PImage[5];
 PImage[] health = new PImage[8];
@@ -75,17 +71,14 @@ int[][] stageList = {
 
 int anime_t = 0;
 
->>>>>>> Stashed changes
 int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
 
 void mainMenu(){
   // load background - Press enter to start
-<<<<<<< Updated upstream
   font = createFont("Far-From Homecoming Updated.otf",10);
     //PImage frog = loadImage("frog2.png");
-=======
+
   //font = createFont("Far-From Homecoming Updated.otf",10);
->>>>>>> Stashed changes
   PImage frog = loadImage("IntroScreen.jpg");
   //background(0,80,20,200);
   //textAlign(CENTER, CENTER);
@@ -225,16 +218,6 @@ void draw(){
     
     renderMap(tree,ground);
     renderPlayer(player.x, player.y, dx, dy, frog);
-  
-    for(int i=0; i<map.length_; i++){
-      int block_x = i % map.cols * blockSize;
-      int block_y = int(i / map.cols) * blockSize;
-      if(mapTile[i].type == 2){
-        fill(0, 0,20,50); 
-        rect(block_x - camera_x, block_y - camera_y, blockSize, blockSize);
-      }
-      
-    }
     
     if(clear_flag == 1){
       fill(0, 100);
@@ -329,17 +312,13 @@ void keyReleased(){
 void renderPlayer(int x, int y, int dx, int dy, PImage[] frog){
   float attach_x = 0;
   float attach_y = sin(radians(anime_t*15)) * 1;
-  if(dx < 0){
-     attach_x = -3;
-  }
-  if(dx > 0){
-    attach_x = 3;
-  }
-  //fill(255);
-  //rect(x - camera_x, y + attach_y - camera_y, playerSize, playerSize - attach_y, playerSize/4);
-  //fill(80);
-  //ellipse(x + playerSize/2 - 10 + attach_x - camera_x, y + 20 + attach_y - camera_y, 5, 5);
-  //ellipse(x + playerSize/2 + 10 + attach_x - camera_x, y + 20 + attach_y - camera_y, 5, 5);
+  ////if(dx < 0){
+  ////   attach_x = -3;
+  ////}
+  ////if(dx > 0){
+  ////  attach_x = 3;
+  
+
 
   for (int i = 0; i < frog.length; i++){
     image(frog[frameCount%8], x - camera_x, y + attach_y - camera_y,playerSize, playerSize*13/16);
@@ -378,26 +357,21 @@ void renderMap(PImage[] tree, PImage[] ground){
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(health[frameCount%health.length],block_x-camera_x+blockSize/4,block_y-camera_y+blockSize/4,blockSize*0.5,blockSize*0.5);
     }
-    if(mapList[i] == 3){ //dynamite - tnt
+    if(mapTile[i].type == 3){ //dynamite - tnt
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(tnt[frameCount%tnt.length],block_x-camera_x+blockSize/4,block_y-camera_y+blockSize/4,blockSize*0.7,blockSize*0.7);
     }
-    if(mapList[i] == 333){ //bomb
+    if(mapTile[i].type == 333){ //bomb
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(bomb[frameCount%bomb.length],block_x-camera_x-blockSize/4,block_y-camera_y-blockSize/4,blockSize*1.2,blockSize*1.2);
     }
     //rect(block_x - camera_x, block_y - camera_y, 100, 100);
-    
-<<<<<<< Updated upstream
+
     if(mapTile[i].type == 1){ //target
-      fill(0, 200, 255);
-      rect(block_x + 10 - camera_x, block_y + 10 - camera_y, blockSize-20, blockSize-20, 5);
-=======
-    if(mapList[i] == 1){ //target
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(house,block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       //rect(block_x + 10 - camera_x, block_y + 10 - camera_y, blockSize-20, blockSize-20, 5);
->>>>>>> Stashed changes
+
     }
     popMatrix();
   }
