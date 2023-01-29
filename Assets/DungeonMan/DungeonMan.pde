@@ -250,6 +250,21 @@ void draw(){
       textSize(32);
       text("Press Enter to Play Again", width/2, height/2 + 100);
     }
+    
+    if(clear_flag == -2){
+      fill(0, 100);
+      rect(0, 0, width, height);
+      textAlign(CENTER, CENTER);
+      fill(255, 214, 64);
+
+      
+      textSize(45);
+      text("Froggie.exe just CRASHED", width/2, height/2);
+      
+      textSize(32);
+      text("Press Enter to Play Again", width/2, height/2 + 100);
+    }
+    
     camera_x = player.x - width/2 + playerSize/2;
     camera_y = player.y - height/2 + playerSize/2;
     healthBar();
@@ -443,7 +458,7 @@ void trap(int i){
     player.health = 0;
     player.playerSpeed = 0;
     mapTile[i].deactivated = true;
-    clear_flag = -1;
+    clear_flag = -2;
   }
   
   
