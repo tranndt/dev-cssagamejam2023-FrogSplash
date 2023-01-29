@@ -25,6 +25,12 @@ PImage[] water = new PImage[14];
 PFont font;
 
 PImage[] goal = new PImage[6];
+PImage[] frogGreen = new PImage[11];
+PImage[] frogYellow = new PImage[11];
+PImage[] frogBlue = new PImage[11];
+PImage[] frogPink = new PImage[11];
+
+
 
 PImage[] tnt = new PImage[19];
 PImage[] spike = new PImage[5];
@@ -76,20 +82,22 @@ int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
 void mainMenu(){
   // load background - Press enter to start
   font = createFont("Far-From Homecoming Updated.otf",10);
-    //PImage frog = loadImage("frog2.png");
-
+  //PImage frog = loadImage("frog2.png");
   //font = createFont("Far-From Homecoming Updated.otf",10);
-  PImage frog = loadImage("IntroScreen.jpg");
-  //background(0,80,20,200);
-  //textAlign(CENTER, CENTER);
-  //fill(255, 214, 64);
-  textFont(font, height*0.13);
-  //text("Frog Splash", width*0.5, height*0.1);
-  //textFont(font, height*0.09);
-  //fill(255, 214, 64);
-  //text("Far From Home", width*0.5, height*0.22);
-  //text("Press Enter to Start", width*0.5, height*0.9);
-  image(frog,0,0,width,width);
+    //textFont(font, height*0.09);
+
+  PImage f = loadImage("IntroScreen.jpg");
+  image(f,0,0,width,width);
+   for (int i = 0; i < frogGreen.length; i++){
+    image(frogGreen[frameCount%frogGreen.length], width*0.2, height*0.25,width*0.3, height*0.3*13/16);
+    image(frogYellow[frameCount%frogYellow.length], width*0.5, height*0.25,width*0.3, height*0.3*13/16);
+    image(frogBlue[frameCount%frogBlue.length], width*0.2, height*0.5,width*0.3, height*0.3*13/16);
+    image(frogPink[frameCount%frogPink.length], width*0.5, height*0.5,width*0.3, height*0.3*13/16);
+
+  }
+    textAlign(CENTER, CENTER);
+    text("PLEASE HELP FROGGIE GET HOME >.<", width*0.5, height*0.97);
+
 }
 
 void healthBar(){
@@ -112,6 +120,18 @@ void setup() {
   frameRate(15);
   for (int i = 0; i < frog.length; i++){
     frog[i] = loadImage("frog" +i+ ".png");
+  }
+  for (int i = 0; i < frogGreen.length; i++){
+    String s = i+"";
+    if (i < 10) s = "0"+s;
+    frogGreen[i] = loadImage("frog_croak_" +s+ ".png");
+  }
+  for (int i = 0; i < frogYellow.length; i++){
+    String s = i+"";
+    if (i < 10) s = "0"+s;
+    frogYellow[i] = loadImage("frog_yellow/frame_"+s+"_delay-0.08s.png");
+    frogBlue[i] = loadImage("frog_blue/frame_"+s+"_delay-0.08s.png");
+    frogPink[i] = loadImage("frog_pink/frame_"+s+"_delay-0.08s.png");
   }
   for (int i = 0; i < tree.length; i++){
     tree[i] = loadImage("tree"+ (i+1) + ".png");
