@@ -478,20 +478,28 @@ void trap(int i){
   //spike
   if(mapTile[i].type == 11 && mapTile[i].deactivated == false){
     player.health--;
-    if(dx < 0){
-      dx += 1;
-    }else{
-      dx -= 1;
+    
+    Tile[] neighbor = map.getNbr(i);
+    int[] index = map.neiIndex(i);
+    for(int j=0; j<8;j++){
+      if(neighbor[j].type == 0){
+        player.x = index[j]%map.cols * blockSize;
+        player.y = (int)(index[j]/map.cols) * blockSize;
+      }
     }
-    if(dy < 0){
-      dy += 1;
-    }else{
-      dy -= 1;
-    }
-    if(dx == 0 && dy == 0){
-      dx +=1;
-    }
-    print(player.health);
+    //if(dx < 0){
+    //  dx = 1;
+    //}else{
+    //  dx = -1;
+    //}
+    //if(dy < 0){
+    //  dy = 1;
+    //}else{
+    //  dy = -1;
+    //}
+    //if(dx == 0 && dy == 0){
+    //  dx = 1;
+    //}
     mapTile[i].deactivated = true;
   }
   
@@ -499,6 +507,7 @@ void trap(int i){
   if(mapTile[i].type == 6 && mapTile[i].deactivated == false){
     player.health++;
     print(player.health);
+    mapTile[i].type = 0;
     mapTile[i].deactivated = true;
   }
   
@@ -519,6 +528,7 @@ void trap(int i){
   }else if(mapTile[i].type == 333 && mapTile[i].deactivated == false && mapTile[i].first == true){ //bomb
     if(player.numKey >= 3){
       map.bomb(i);
+      mapTile[i].type = 0;
       mapTile[i].deactivated = true;
     }
   }
@@ -526,6 +536,7 @@ void trap(int i){
   //key 
   if(mapTile[i].type == 3 && mapTile[i].deactivated == false && mapTile[i].showKey == true){
     player.numKey++;
+    mapTile[i].type = 0;
     mapTile[i].showKey = false;
     mapTile[i].deactivated = true;
   }
