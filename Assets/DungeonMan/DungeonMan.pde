@@ -6,8 +6,7 @@ int clear_flag = 0;
 int level = 0;
 
 int windowBlocks = 7;
-//int blockSize = 0;
-Player player = new Player();
+Player player;
 int prev_x;
 int prev_y;
 char up = 'w';
@@ -18,50 +17,12 @@ int anime_t = 0;
 
 Map map = new Map(level);
 Tile[] mapTile = map.createTile();
-int blockSize = 50;
+int blockSize = 80;
 int playerSize = (int) (blockSize*0.8);
 PImage[] tree = new PImage[12];
 PImage[] frog = new PImage[8];
 PImage[] ground = new PImage[5];
 PFont font;
-
-int[][] stageList = {
-  {
-      99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
-      99,0,0,0,0,0,0,0,0,0,0,0,0,99,0,0,0,0,0,0,0,0,0,0,0,0,0,0,99,
-      99,0,0,0,0,0,0,0,4,0,0,0,4,99,0,0,4,0,0,0,0,0,4,0,0,0,0,0,99,
-      99,0,0,99,99,99,99,0,99,99,99,0,0,99,0,99,0,0,99,99,99,0,0,99,99,99,0,0,99,
-      99,0,0,99,2,99,0,0,99,8,0,0,0,99,0,99,0,0,99,8,0,0,0,99,0,99,0,0,99,
-      99,0,0,99,0,99,0,0,99,99,99,0,0,99,0,99,0,0,99,99,99,0,0,99,99,99,0,0,99,
-      99,0,0,99,0,99,0,4,99,0,0,0,0,99,0,99,0,0,99,0,0,0,0,99,99,0,0,0,99,
-      99,0,0,99,0,99,0,0,99,99,99,0,0,0,99,0,0,0,99,99,99,0,0,99,0,99,0,0,99,
-      99,0,0,4,0,4,0,0,99,0,0,0,0,0,0,0,0,99,0,0,0,0,0,0,0,0,99,0,99,
-      99,0,0,0,0,0,0,0,99,0,0,0,4,0,0,0,99,0,0,4,0,0,0,0,0,0,0,0,99,
-      99,0,0,99,99,99,0,0,99,99,99,0,0,99,99,99,0,0,99,99,99,0,0,4,99,0,0,4,99,
-      99,0,4,99,0,0,0,0,99,0,99,0,0,99,0,99,0,0,99,10,99,0,0,99,0,99,0,0,99,
-      99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,99,99,0,0,99,
-      99,0,0,99,10,99,0,0,99,0,99,0,0,99,4,99,0,0,99,4,99,0,0,99,0,99,0,0,99,
-      99,0,0,99,99,99,99,99,99,99,99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,
-      99,0,0,0,0,0,0,0,0,0,0,0,99,0,0,0,0,0,0,0,0,0,99,0,0,0,0,0,99,
-      99,0,4,0,0,0,0,0,0,4,0,99,0,0,0,0,4,0,0,0,0,99,0,0,0,0,0,10,99,
-      99,0,0,99,99,99,0,0,99,99,99,0,0,99,0,99,99,99,99,99,99,0,0,99,99,99,99,99,99,
-      99,0,0,99,0,0,0,0,0,99,0,0,0,99,0,99,0,0,99,0,4,0,4,99,99,99,0,99,99,
-      99,0,0,99,0,99,4,0,0,99,0,0,0,99,0,99,0,0,99,99,99,0,0,99,1,0,0,0,99,
-      99,0,0,99,0,99,0,0,0,99,0,0,0,99,10,99,0,0,99,0,0,0,0,99,99,99,0,0,99,
-      99,0,0,99,99,99,0,4,99,99,99,0,0,0,99,0,0,4,99,99,99,0,0,99,99,99,4,0,99,
-      99,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,99,0,0,0,0,0,99,
-      99,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,99,0,0,0,4,0,0,99,
-      99,0,0,99,0,99,0,0,99,99,99,0,0,99,0,99,4,0,99,0,99,0,0,99,99,99,0,0,99,
-      99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,
-      99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,0,99,0,0,99,99,99,4,0,99,
-      99,0,0,0,99,0,0,0,99,0,99,0,10,99,0,99,0,0,99,0,99,0,0,99,0,0,0,0,99,
-      99,99,99,0,99,4,0,99,99,99,99,99,99,99,99,99,0,0,99,99,99,0,0,99,0,99,99,99,99,
-      99,0,0,0,99,0,0,0,4,0,0,0,4,0,4,4,0,4,0,0,0,0,0,0,0,4,0,0,99,
-      99,0,4,0,99,0,0,0,0,0,4,0,0,0,0,0,0,0,0,4,0,0,0,4,0,0,0,0,99,
-      99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99
-  }
-
-};
 
 //int anime_t = 0;
 int stage = 0; // 0 = MAIN MENU, 1 = GAME, 2 = GAME OVER
@@ -72,7 +33,6 @@ void mainMenu(){
   PImage frog = loadImage("frog2.png");
   background(0,80,20,200);
   textAlign(CENTER, CENTER);
-  fill(255, 214, 64);
   textFont(font, height*0.13);
   text("Frog Splash", width*0.5, height*0.1);
   textFont(font, height*0.09);
@@ -84,7 +44,7 @@ void mainMenu(){
 }
 
 void setup() {
-  size(600 , 600);
+  size(700 , 700);
   initStage(level);
   smooth();
   frameRate(20);
@@ -101,6 +61,7 @@ void setup() {
 
 void draw(){
   background(30);
+  
   if (stage == 0){
       mainMenu();
       if (key == ENTER || keyCode == ENTER) stage = 1;
@@ -109,20 +70,20 @@ void draw(){
     // Tien's code
     prev_x = player.x;
     prev_y = player.y;
-    player.x += dx * 5;
-    player.y += dy * 5;
+    player.x += dx * player.playerSpeed;
+    player.y += dy * player.playerSpeed;
     
-    if(player.x < 0 || player.x > map.cols*100){
-      player.x = map.cols*100 - player.x;
+    if(player.x < 0 || player.x > map.cols*blockSize){
+      player.x = map.cols*blockSize - player.x;
     }
-    if(player.y < 0 || player.y > map.rows*100){
-      player.y = map.rows*100 - player.y;
+    if(player.y < 0 || player.y > map.rows*blockSize){
+      player.y = map.rows*blockSize - player.y;
     }
     
     for(int i=0; i<map.length_; i++){
-      int block_x = i % map.cols * 100;
-      int block_y = int(i / map.cols) * 100;
-      if(isHit(player.x, player.y, playerSize, playerSize, block_x, block_y, 100, 100) == 1){
+      int block_x = i % map.cols * blockSize;
+      int block_y = int(i / map.cols) * blockSize;
+      if(isHit(player.x, player.y, playerSize, playerSize, block_x, block_y, blockSize, blockSize) == 1){
           trap(i);
       }else{
         mapTile[i].deactivated = false;
@@ -145,11 +106,11 @@ void draw(){
       //fill(255, 255,0);
       ////rect(0,0,2900,3200);
       //fill(80);
-      //if(abs(dx) > 0 || abs(dy) > 0){
-      //  anime_t ++;
-      //}else{
-      //  anime_t = 0; 
-      //}
+      if(abs(dx) > 0 || abs(dy) > 0){
+        anime_t ++;
+      }else{
+        anime_t = 0; 
+      }
       
       if(mapTile[i].type == 990){ //path but looks like wall
         fill(140); 
@@ -168,11 +129,11 @@ void draw(){
         fill(100,90,100);
       }
       
-       rect(block_x - camera_x, block_y - camera_y, 100, 100);
+      rect(block_x - camera_x, block_y - camera_y, blockSize, blockSize);
         
       if(mapTile[i].type == 1){
         fill(0, 200, 255);
-        rect(block_x + 10 - camera_x, block_y + 10 - camera_y, 100-20, 100-20, 5);
+        rect(block_x + 10 - camera_x, block_y + 10 - camera_y, blockSize-20, 100-blockSize, 5);
       }
       pop();
       
@@ -180,15 +141,15 @@ void draw(){
     
     //renderPlayer(player.x, player.y, dx, dy);
     
-      renderMap(tree,ground);
-      renderPlayer(player.x, player.y, dx, dy, frog);
+    renderMap(tree,ground);
+    renderPlayer(player.x, player.y, dx, dy, frog);
   
     for(int i=0; i<map.length_; i++){
-      int block_x = i % map.cols * 100;
-      int block_y = int(i / map.cols) * 100;
+      int block_x = i % map.cols * blockSize;
+      int block_y = int(i / map.cols) * blockSize;
       if(mapTile[i].type == 2){
         fill(0, 0,20,50); 
-        rect(block_x - camera_x, block_y - camera_y, 100, 100);
+        rect(block_x - camera_x, block_y - camera_y, blockSize, blockSize);
       }
       
     }
@@ -199,33 +160,28 @@ void draw(){
       textAlign(CENTER, CENTER);
       
       textSize(32);
-      fill(255);
-      text("STAGE " + (level + 1) + "/" + map.num_map, width/2, height/2 - 100);
+      //fill(255);
+        fill(255, 214, 64);
+
       
       textSize(64);
-      fill(255);
-      text("CLEAR", width/2, height/2);
+      text("You Found HOME", width/2, height/2);
       
       textSize(32);
-      fill(255);
-      text("Press Enter to Next", width/2, height/2 + 100);
+      text("Press Enter to Play Again", width/2, height/2 + 100);
     }
     
     if(clear_flag == -1){
       fill(0, 100);
       rect(0, 0, width, height);
       textAlign(CENTER, CENTER);
-      
-      textSize(32);
-      fill(255);
-      text("STAGE " + (level + 1) + "/" + map.num_map, width/2, height/2 - 100);
+      fill(255, 214, 64);
+
       
       textSize(64);
-      fill(255);
-      text("You Lost", width/2, height/2);
+      text("You LOST", width/2, height/2);
       
       textSize(32);
-      fill(255);
       text("Press Enter to Play Again", width/2, height/2 + 100);
     }
     
@@ -308,9 +264,9 @@ void draw(){
     //   //camera_y = y_index * width;
     //  //printArray(new int[] {x,y,x_index,y_index,camera_x,camera_y});
     //}
-}
+  }
   
-}
+}//end draw
 
 void printArray(int [] array){
   for (int a : array){
@@ -324,6 +280,7 @@ void keyPressed(){
   //  bgm.loop();
   //}
   if(keyCode == left || key == left){
+    print("keypressed");
     dx = -1;
   }
   if(keyCode == right  || key == right){
@@ -366,12 +323,12 @@ void keyReleased(){
 void renderPlayer(int x, int y, int dx, int dy, PImage[] frog){
   float attach_x = 0;
   float attach_y = sin(radians(anime_t*15)) * 1;
-  //if(dx < 0){
-  //  attach_x = -3;
-  //}
-  //if(dx > 0){
-  //  attach_x = 3;
-  //}
+  if(dx < 0){
+     attach_x = -3;
+  }
+  if(dx > 0){
+    attach_x = 3;
+  }
   //fill(255);
   //rect(x - camera_x, y + attach_y - camera_y, playerSize, playerSize - attach_y, playerSize/4);
   //fill(80);
@@ -426,7 +383,6 @@ void initStage(int level){
   player = new Player();
   initPlayerPos(2);
   reverseKey('a','d','w','s');
-  frameRate(60);
   clear_flag = 0;
 }
 
@@ -442,7 +398,6 @@ void initPlayerPos(int position){
   player.y = (int)(index/map.cols) * blockSize;
   //x = index%cols * blockSize;
   //y = (int)(index/cols) * blockSize;
-
 }
 
 int isHit(int px, int py, int pw, int ph, int ex, int ey, int ew, int eh){
@@ -453,6 +408,7 @@ int isHit(int px, int py, int pw, int ph, int ex, int ey, int ew, int eh){
   }
   return 0;
 }
+
 void trap(int i){
   
   //Wall
@@ -481,9 +437,9 @@ void trap(int i){
   //death
   if(mapTile[i].type == 4 && mapTile[i].deactivated == false){
     player.health = 0;
+    player.playerSpeed = 0;
     mapTile[i].deactivated = true;
     clear_flag = -1;
-    print("Death");
   }
   
   
@@ -528,7 +484,7 @@ void trap(int i){
   
   //x2 speed
   if(mapTile[i].type == 5 && mapTile[i].deactivated == false){
-    frameRate(120);
+    player.playerSpeed = player.playerSpeed*2;
     mapTile[i].deactivated = true;
   }
   
