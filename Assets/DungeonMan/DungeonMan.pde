@@ -314,7 +314,7 @@ void renderMap(PImage[] tree, PImage[] ground){
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
-    if(mapTile[i].type == 0 || mapTile[i].type == 69){ //path
+    if(mapTile[i].type == 0 || mapTile[i].type == 69 || mapTile[i].type == 96 ||mapTile[i].type == 909 || mapTile[i].type == 82){ //path
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
