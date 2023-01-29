@@ -1,3 +1,5 @@
+import processing.sound.*;
+SoundFile file;
 int dx = 0;
 int dy = 0;
 int camera_x = 0;
@@ -29,6 +31,7 @@ PImage[] health = new PImage[8];
 PImage[] bomb = new PImage[10];
 PImage[] start = new PImage[12];
 PImage house;
+<<<<<<< Updated upstream
 PFont font;
 
 
@@ -69,6 +72,8 @@ int[][] stageList = {
   }
 
 };
+=======
+>>>>>>> Stashed changes
 
 int anime_t = 0;
 
@@ -111,6 +116,14 @@ void setup() {
   initStage(level);
   smooth();
   frameRate(15);
+  
+  //this loads the file based on the file name
+  file = new SoundFile(this,"");
+  file.play();
+  
+  //this changes the volume level (number between 0 and 1)
+  file.amp(.5);
+  
   for (int i = 0; i < frog.length; i++){
     frog[i] = loadImage("frog" +i+ ".png");
   }
