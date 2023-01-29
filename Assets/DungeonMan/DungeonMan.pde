@@ -252,7 +252,7 @@ void draw(){
     camera_x = player.x - width/2 + playerSize/2;
     camera_y = player.y - height/2 + playerSize/2;
     healthBar();
-
+    
   }
   
 }//end draw
@@ -331,6 +331,7 @@ void renderMap(PImage[] tree, PImage[] ground){
   for(int i=0; i<map.length_; i++){
     int block_x = i % map.cols * blockSize;
     int block_y = int(i / map.cols) * blockSize;
+    int messageIndex = 0;
     
     pushMatrix();
     fill(80);
@@ -357,13 +358,14 @@ void renderMap(PImage[] tree, PImage[] ground){
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(health[frameCount%health.length],block_x-camera_x+blockSize/4,block_y-camera_y+blockSize/4,blockSize*0.5,blockSize*0.5);
     }
-    if(mapTile[i].type == 3){ //dynamite - tnt
+    if(mapTile[i].type == 3 && mapTile[i].showKey == true){ //dynamite - tnt
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(tnt[frameCount%tnt.length],block_x-camera_x+blockSize/4,block_y-camera_y+blockSize/4,blockSize*0.7,blockSize*0.7);
+      messageIndex = i;
     }
     if(mapTile[i].type == 333){ //bomb
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
-      image(bomb[frameCount%bomb.length],block_x-camera_x-blockSize/4,block_y-camera_y-blockSize/4,blockSize*1.2,blockSize*1.2);
+      image(tnt[frameCount%tnt.length],block_x-camera_x+blockSize/4,block_y-camera_y+blockSize/4,blockSize*0.7,blockSize*0.7);
     }
     //rect(block_x - camera_x, block_y - camera_y, 100, 100);
 
@@ -372,6 +374,9 @@ void renderMap(PImage[] tree, PImage[] ground){
       image(house,block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       //rect(block_x + 10 - camera_x, block_y + 10 - camera_y, blockSize-20, blockSize-20, 5);
 
+    }
+    if(mapTile[messageIndex].showKey == true){
+      boomBar();
     }
     popMatrix();
   }
@@ -432,7 +437,7 @@ void trap(int i){
   
   //loop back to start
   if(mapTile[i].type == 82){
-    initStage(0);
+    initPlayerPos(2);
   }
   
   
@@ -506,6 +511,7 @@ void trap(int i){
         mapTile[j].showKey = true;
       }      
     }
+    
     mapTile[i].first = true;
   }else if(mapTile[i].type == 333 && mapTile[i].deactivated == false && mapTile[i].first == true){ //bomb
     if(player.numKey >= 3){
@@ -545,4 +551,13 @@ void reverseKey(char left_, char right_, char up_, char down_){
   right = right_;
   up = up_;
   down = down_;
+}
+
+void boomBar(){
+  // draw heart image and number 
+  int offset_x = width/2;
+  int offset_y = height/20;
+  fill(255, 214, 64);
+  textFont(font,playerSize*0.6);
+  text(player.numKey+"/3 TNT",offset_x, offset_y);
 }

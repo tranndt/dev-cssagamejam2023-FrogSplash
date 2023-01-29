@@ -7,7 +7,7 @@ class Player{
   Player(){
     x = 0;
     y = 0;
-    playerSpeed = 10;
+    playerSpeed = 14;
   }
 
 }
