@@ -38,6 +38,7 @@ PImage[] spike = new PImage[5];
 PImage[] health = new PImage[8];
 PImage[] torch = new PImage[5];
 PImage[] lsd = new PImage[8];
+PImage[] doubleSpeed = new PImage[1];
 PImage start;
 PImage house;
 //PFont font;
@@ -188,6 +189,9 @@ void setup() {
   }
   for (int i = 0; i < torch.length; i++){
     torch[i] = loadImage("torch"+i+".png");
+  }
+  for (int i = 0; i < 1; i++){
+    doubleSpeed[i] = loadImage("x2.png");
   }
   house = loadImage("house.png");
 }
@@ -348,14 +352,7 @@ void keyPressed(){
     dy = 1;
   }
   if(keyCode == ENTER){
-    if(clear_flag == 1){
-      level ++;
-      level = level % map.num_map;
-      initStage(level); 
-    }
-    if(clear_flag == -1){
       initStage(level);
-    }
   }
 }
 
@@ -408,13 +405,16 @@ void renderMap(PImage[] tree, PImage[] ground){
     if(mapTile[i].type == 2){ //start
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
       image(start,block_x-camera_x,block_y-camera_y,blockSize,blockSize);
-      
+    }
+    if(mapTile[i].type == 5){ //x2 speed
+      image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
+      image(doubleSpeed[0],block_x-camera_x,block_y-camera_y,blockSize,blockSize);    
     }
     if(mapTile[i].type == 4){ //instant dead - hidden
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
-    if(mapTile[i].type == 0 || mapTile[i].type == 69 || mapTile[i].type == 96 ||mapTile[i].type == 909 || mapTile[i].type == 82){ //path
+    if(mapTile[i].type == 0 || mapTile[i].type == 69 || mapTile[i].type == 96 ||mapTile[i].type == 909 || mapTile[i].type == 82 || (mapTile[i].type == 3 && mapTile[i].showKey == false)){ //path
       image(ground[i%ground.length],block_x-camera_x,block_y-camera_y,blockSize,blockSize);
     }
     
@@ -582,9 +582,11 @@ void trap(int i){
   }
   
   //x2 speed
-  if(mapTile[i].type == 5 && mapTile[i].deactivated == false){
+  if(mapTile[i].type == 5 && mapTile[i].deactivated == false && mapTile[i].first == false){
     player.playerSpeed = player.playerSpeed*2;
     mapTile[i].deactivated = true;
+    mapTile[i].first = true;
+    mapTile[i].type = 0;
   }
   
   //first time step on 333
