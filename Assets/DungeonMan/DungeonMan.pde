@@ -1,3 +1,6 @@
+//import processing.sound.*;
+//SoundFile file;
+
 int dx = 0;
 int dy = 0;
 int camera_x = 0;
@@ -138,11 +141,10 @@ void setup() {
   smooth();
   frameRate(15);
   
-  ////this loads the file based on the file name
-  //file = new SoundFile(this,"");
+  //file = new SoundFile(this,"forest_everglades.wav");
   //file.play();
   
-  ////this changes the volume level (number between 0 and 1)
+  //this changes the volume level (number between 0 and 1)
   //file.amp(.5);
   
   for (int i = 0; i < frog.length; i++){
