@@ -4,6 +4,8 @@ A 2D-styled arcade adventure game made using Processing (Java) for UM CSSA Game 
 
 *Froggie the frog is lost in the woods and must find his way home. But the path may not be as obvious as it seems, for there awaits numerous invisible “glitches” that he must avoid and overcome.*
 
+ ![](Assets/preview.png)
+
 ---
 ## Links
 - [Itch.io](https://tranndt.itch.io/frog-splash-far-from-home)
@@ -14,8 +16,6 @@ Jam Theme:
 
 Development Stack:
 - Java/Processing
-
- ![](Assets/preview.jpg)
 
 ## Features
 To get home safely, Froggie must:
